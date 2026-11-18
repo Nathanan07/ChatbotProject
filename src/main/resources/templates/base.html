@@ -3,28 +3,33 @@
       th:fragment="base(content, titre, activePage)">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${titre} ?: 'EveBot'">EveBot</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" th:href="@{resources/static/img/LogoEve.png}">
-    <!-- Bootstrap + Bootstrap Icons -->
+    <link rel="icon" type="image/png" th:href="@{/img/LogoEve.png}">
+    <!-- Police HK Grotesk (Hanken Grotesk sur Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap">
+    <!-- Bootstrap -->
     <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
-    <link rel="icon" type="image/x-icon" th:href="@{/vendor/bootstrap-icons/bootstrap-icons.min.css}">
     <!-- Feuille de style de l'application -->
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
-<body class="d-flex flex-column min-vh-100">
-<!-- header -->
-<header th:replace="~{fragments/header :: header(${activePage})}"></header>
+<body>
+<div class="eve-app">
+    <!-- Barre latérale -->
+    <aside th:replace="~{fragments/navbar :: navbar(${activePage})}"></aside>
 
-<!-- Contenu principal -->
-<main class="container flex-grow-1">
     <!-- Contenu spécifique des pages -->
-    <div th:replace="${content}"></div>
-</main>
+    <main class="eve-main">
+        <div th:replace="${content}"></div>
+    </main>
+</div>
 
-<!-- JS Bootstrap -->
+<!-- JS Bootstrap + JS de l'application -->
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
+<script th:src="@{/js/app.js}"></script>
 </body>
 </html>

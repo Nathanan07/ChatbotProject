@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: base(~{::content}, 'Eve - Détail du modèle', 'modeles')}">
+
+<section th:fragment="content" class="eve-panel no-deco">
+
+    <!-- Barre du haut -->
+    <div class="detail-top">
+        <a th:href="@{/admin/modeles}" class="link-back">
+            <i class="ico ico-arrow-l"></i> Retour à la liste
+        </a>
+        <a th:href="@{/admin/modeles/1/modifier}" class="btn-eve">
+            <i class="ico ico-pencil"></i> Modifier
+        </a>
+    </div>
+
+    <!-- Identité du modèle -->
+    <div class="detail-hero">
+        <span class="model-logo lg"><i class="ico ico-openai"></i></span>
+        <div>
+            <h2>Nom du modèle</h2>
+            <p class="prov">OpenAI</p>
+            <span class="badge-statut actif">Actif</span>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="info-card">
+        <h3>Description</h3>
+        <p>Ce modèle permet de générer du texte et de répondre à des questions dans un large éventail de cas d'usage.</p>
+    </div>
+
+    <!-- Configuration OpenRouter -->
+    <div class="info-card mb-4">
+        <h3>Configuration OpenRouter</h3>
+        <div class="row-info first">
+            <span>Fournisseur</span>
+            <span class="v">OpenAI</span>
+        </div>
+        <div class="row-info">
+            <span>Identifiant du modèle</span>
+            <span><code class="code-chip">openai/example-model-v1</code></span>
+        </div>
+    </div>
+</section>
+</html>

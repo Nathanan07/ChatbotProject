@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base-auth :: base(~{::content}, 'Eve - Connexion')}">
+
+<section th:fragment="content" class="auth-card">
+
+    <div class="eve-logo"></div>
+
+    <h1 class="auth-title">Connexion à <span>Eve</span></h1>
+    <p class="auth-sub">Retrouvez vos conversations<br>et continuez l'expérience</p>
+
+    <form th:action="@{/login}" method="post">
+        <label class="auth-field">
+            <i class="ico ico-mail"></i>
+            <input type="email" name="username" placeholder="Adresse e-mail" required autocomplete="username">
+        </label>
+
+        <label class="auth-field">
+            <i class="ico ico-lock"></i>
+            <input type="password" name="password" id="password" placeholder="Mot de passe" required autocomplete="current-password">
+            <button type="button" class="toggle-pwd" id="togglePwd" aria-label="Afficher le mot de passe">
+                <i class="ico ico-eye"></i>
+            </button>
+        </label>
+
+        <button type="submit" class="btn-login">
+            Se connecter <i class="ico ico-arrow-r"></i>
+        </button>
+    </form>
+
+    <a th:href="@{/mot-de-passe-oublie}" class="auth-link">Mot de passe oublié ?</a>
+
+    <div class="auth-sep"></div>
+    <p class="auth-alt">Pas encore de compte ?</p>
+    <a th:href="@{/inscription}" class="auth-alt-link">Créer un compte</a>
+</section>
+</html>

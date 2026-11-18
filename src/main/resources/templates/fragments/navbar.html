@@ -1,5 +1,37 @@
 <div xmlns:th="http://www.thymeleaf.org">
-    <nav th:fragment="navbar(activePage)" class="navbar navbar-expand-lg p-0">
+    <aside th:fragment="navbar(activePage)" class="eve-sidebar">
 
-    </nav>
+        <a th:href="@{/}" class="eve-logo" aria-label="Eve">
+        </a>
+
+        <!-- Bouton affiché uniquement sur la page de chat -->
+        <a th:if="${activePage == 'conversations'}" th:href="@{/chat}" class="eve-new-chat">
+            <i class="ico ico-plus"></i> Nouveau chat
+        </a>
+
+        <ul class="eve-nav">
+            <li>
+                <a th:href="@{/chat}" th:classappend="${activePage == 'conversations'} ? 'active'">
+                    <i class="ico ico-chat"></i> Conversations
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/modeles}" th:classappend="${activePage == 'modeles'} ? 'active'">
+                    <i class="ico ico-grid"></i> Modèles IA
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/parametres}" th:classappend="${activePage == 'parametres'} ? 'active'">
+                    <i class="ico ico-gear"></i> Paramètres
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/aide}" th:classappend="${activePage == 'aide'} ? 'active'">
+                    <i class="ico ico-help"></i> Aide
+                </a>
+            </li>
+        </ul>
+
+        <p class="eve-tagline">Une IA<br>à vos côtés<br>tous les jours</p>
+    </aside>
 </div>

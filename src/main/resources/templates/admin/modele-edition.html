@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: base(~{::content}, 'Eve - Modifier le modèle', 'modeles')}">
+
+<section th:fragment="content" class="eve-panel no-deco">
+
+    <form th:action="@{/admin/modeles/1/modifier}" method="post" enctype="multipart/form-data" class="d-flex flex-column flex-grow-1">
+
+        <div class="head-with-back">
+            <a th:href="@{/admin/modeles}" class="back-round" aria-label="Retour à la liste">
+                <i class="ico ico-left"></i>
+            </a>
+            <div>
+                <h1 class="page-title" style="font-size:1.9rem">Modifier le modèle</h1>
+                <p class="page-sub mt-0">Mettez à jour les informations de ce modèle connecté via OpenRouter.</p>
+            </div>
+        </div>
+
+        <div class="page-body">
+            <div class="form-grid" style="grid-template-columns: minmax(0,1fr) 400px;">
+
+                <!-- Colonne gauche -->
+                <div>
+                    <div class="form-group">
+                        <label class="eve-label" for="nom">Nom du modèle</label>
+                        <input class="eve-input" type="text" id="nom" name="nom" value="Nom du modèle prérempli">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="eve-label" for="identifiant">Identifiant OpenRouter</label>
+                        <input class="eve-input" type="text" id="identifiant" name="identifiantOpenRouter" value="Identifiant OpenRouter prérempli">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="eve-label" for="fournisseur">Fournisseur</label>
+                        <select class="eve-select" id="fournisseur" name="fournisseur">
+                            <option selected>Fournisseur prérempli</option>
+                            <option>OpenAI</option>
+                            <option>Anthropic</option>
+                            <option>Google</option>
+                            <option>Meta</option>
+                            <option>Mistral</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="eve-label" for="urlLogo">URL du logo</label>
+                        <input class="eve-input" type="text" id="urlLogo" name="urlLogo" value="URL du logo prérempli">
+                    </div>
+                </div>
+
+                <!-- Colonne droite : logo + statut -->
+                <div>
+                    <label class="eve-label">Logo du modèle</label>
+                    <div class="logo-edit">
+                        <span class="model-logo lg" style="color:#7b6cff"><i class="ico ico-box"></i></span>
+                        <div class="btns">
+                            <label class="btn-eve-dark" for="logoFile" style="cursor:pointer">
+                                <i class="ico ico-image"></i> Changer le logo
+                            </label>
+                            <button type="button" class="btn-eve-dark" id="removeLogo">
+                                <i class="ico ico-trash"></i> Retirer le logo
+                            </button>
+                        </div>
+                        <input type="file" id="logoFile" name="logo" accept=".png,.jpg,.jpeg,.svg" hidden>
+                    </div>
+
+                    <label class="eve-label">Statut</label>
+                    <div class="status-row">
+                        <label class="eve-switch">
+                            <input type="checkbox" name="actif" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span>Actif</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description pleine largeur -->
+            <div class="form-group mt-2">
+                <label class="eve-label" for="description">Description</label>
+                <textarea class="eve-textarea" id="description" name="description" rows="4">Description préremplie du modèle</textarea>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/admin/modeles/1/supprimer}" class="btn-link-danger push-left">
+                    <i class="ico ico-trash"></i> Supprimer le modèle
+                </a>
+                <a th:href="@{/admin/modeles}" class="btn-eve-dark">Annuler</a>
+                <button type="submit" class="btn-eve">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </form>
+</section>
+</html>

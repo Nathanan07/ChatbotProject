@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: base(~{::content}, 'Eve - Conversations', 'conversations')}">
+
+<section th:fragment="content" class="eve-panel">
+
+    <!-- En-tête de la conversation -->
+    <div class="chat-head">
+        <span class="eve-avatar"></span>
+        <div>
+            <h2>Eve</h2>
+            <small>Toujours là pour vous</small>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chatMessages">
+        <div class="msg bot">
+            <span class="eve-avatar sm"></span>
+            <div class="bubble">Bonjour, comment puis-je vous aider ?</div>
+        </div>
+    </div>
+
+    <!-- Zone de saisie -->
+    <form class="chat-input" id="chatForm" th:action="@{/chat/envoyer}" method="post">
+        <button type="button" class="btn-clip" aria-label="Joindre un fichier">
+            <i class="ico ico-clip"></i>
+        </button>
+        <input type="text" name="message" id="chatInput" placeholder="Écrire un message…" autocomplete="off">
+        <button type="submit" class="btn-send" aria-label="Envoyer">
+            <i class="ico ico-send"></i>
+        </button>
+    </form>
+</section>
+</html>
