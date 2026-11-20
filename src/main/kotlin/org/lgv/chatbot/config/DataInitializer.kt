@@ -51,25 +51,30 @@ class DataInitializer(
                 nom = "Gemini 1.5 Flash",
                 identifiantModele = "gemini-1.5-flash",
                 actif = true,
-                fournisseur = gemini
+                fournisseur = gemini,
+                urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+
             ),
             ModeleIA(
                 nom = "Gemini 1.5 Pro",
                 identifiantModele = "gemini-1.5-pro",
                 actif = true,
-                fournisseur = gemini
+                fournisseur = gemini,
+                urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent",
             ),
             ModeleIA(
                 nom = "Mistral Small",
                 identifiantModele = "mistral-small-latest",
                 actif = true,
-                fournisseur = mistral
+                fournisseur = mistral,
+                urlAPI = "https://api.mistral.ai/v1/chat/completions",
             ),
             ModeleIA(
                 nom = "Mistral Medium",
                 identifiantModele = "mistral-medium-latest",
                 actif = true,
-                fournisseur = mistral
+                fournisseur = mistral,
+                urlAPI = "https://api.mistral.ai/v1/chat/completions",
             )
         )
 

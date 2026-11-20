@@ -29,8 +29,10 @@ class Utilisateur(
     @OneToMany(mappedBy = "utilisateur")
     var workspaces: MutableList<Workspace> = mutableListOf(),
 
-    @OneToMany(mappedBy = "utilisateur")
+    /*@OneToMany(mappedBy = "utilisateur")
     var conversations: MutableList<Conversation> = mutableListOf(),
+
+     */
 
     @OneToMany(mappedBy = "utilisateur")
     var signalements: MutableList<Signalement> = mutableListOf()

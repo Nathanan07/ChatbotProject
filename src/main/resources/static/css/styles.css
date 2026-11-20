@@ -40,7 +40,7 @@
 .ico-chat      { --i: url("../vendor/bootstrap-icons/chat-square.svg"); }
 .ico-grid      { --i: url("../vendor/bootstrap-icons/grid.svg"); }
 .ico-gear      { --i: url("../vendor/bootstrap-icons/gear.svg"); }
-.ico-help      { --i: url("../vendor/bootstrap-icons/question-circle.svg"); }
+.ico-login     { --i: url("../vendor/bootstrap-icons/box-arrow-in-right.svg"); }
 .ico-clip      { --i: url("../vendor/bootstrap-icons/paperclip.svg"); }
 .ico-send      { --i: url("../vendor/bootstrap-icons/send-fill.svg"); }
 .ico-mail      { --i: url("../vendor/bootstrap-icons/envelope.svg"); }
@@ -61,7 +61,6 @@
 .ico-anthropic { --i: url("../vendor/bootstrap-icons/anthropic.svg"); }
 .ico-google    { --i: url("../vendor/bootstrap-icons/google.svg"); }
 .ico-meta      { --i: url("../vendor/bootstrap-icons/meta.svg"); }
-.ico-cpu       { --i: url("../vendor/bootstrap-icons/cpu.svg"); }
 
 /* Base ------------------------------------------------------------------- */
 html, body { height: 100%; }
@@ -75,22 +74,11 @@ body {
 }
 a { color: inherit; text-decoration: none; }
 
-/* Logo (recadré sur la tête + "Eve") -------------------------------------- */
-.eve-logo {
-    display: block;
-    width: 210px;
-    height: 112px;
-    background: url("../img/LogoEve.png") center 41% / 215% auto no-repeat;
-}
-.eve-avatar {
-    flex: 0 0 auto;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    border: 2px solid rgba(145, 106, 250, .55);
-    background: #071138 url("../img/LogoEve.png") 54% 30% / 330% auto no-repeat;
-    box-shadow: 0 0 18px rgba(91, 76, 231, .45);
-}
+/* Logo : image prise directement dans static/img */
+.eve-brand img { display: block; width: 100%; max-width: 200px; height: auto; margin: 0 auto 26px; border-radius: 18px; }
+.auth-logo { display: block; width: 200px; height: auto; margin: 0 auto 14px; border-radius: 24px; }
+.eve-avatar { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(145, 106, 250, .55); box-shadow: 0 0 18px rgba(91, 76, 231, .45); }
+.eve-avatar img { width: 100%; height: 100%; object-fit: cover; transform: scale(2.4); transform-origin: 55% 27%; }
 .eve-avatar.sm { width: 46px; height: 46px; border-width: 1px; }
 
 /* ==========================================================================
@@ -117,7 +105,6 @@ a { color: inherit; text-decoration: none; }
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 330' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='1' x2='1' y2='0'><stop offset='0' stop-color='%23242fd6'/><stop offset='.6' stop-color='%236d4bf0'/><stop offset='1' stop-color='%23b58bff'/></linearGradient><linearGradient id='h' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%234a5cff' stop-opacity='.55'/><stop offset='1' stop-color='%23050b2b' stop-opacity='0'/></linearGradient></defs><path d='M0 150 C70 140 150 100 280 20 L280 330 L0 330Z' fill='url(%23h)'/><path d='M0 215 C80 190 170 120 280 40 C220 130 120 200 0 250Z' fill='url(%23g)' opacity='.95'/></svg>")
         bottom / 100% 100% no-repeat;
 }
-.eve-sidebar .eve-logo { margin: 0 auto 26px; width: 200px; height: 108px; }
 
 .eve-new-chat {
     display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -298,7 +285,6 @@ body.eve-auth::after {           /* vague bas droite */
     box-shadow: 0 0 60px rgba(74, 92, 255, .35), inset 0 0 30px rgba(74, 92, 255, .12);
     backdrop-filter: blur(10px);
 }
-.auth-card .eve-logo { margin: 0 auto 14px; width: 240px; height: 140px; background-size: 205%; background-position: center 38%; }
 .auth-title { font-size: 2.1rem; font-weight: 700; margin: 0 0 8px; }
 .auth-title span, .grad-text {
     background: linear-gradient(90deg, #7a5cf0, #b06bff);

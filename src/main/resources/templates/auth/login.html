@@ -4,7 +4,7 @@
 
 <section th:fragment="content" class="auth-card">
 
-    <div class="eve-logo"></div>
+    <img class="auth-logo" th:src="@{/img/LogoEve.png}" alt="Eve">
 
     <h1 class="auth-title">Connexion à <span>Eve</span></h1>
     <p class="auth-sub">Retrouvez vos conversations<br>et continuez l'expérience</p>
@@ -28,10 +28,10 @@
         </button>
     </form>
 
-    <a th:href="@{/mot-de-passe-oublie}" class="auth-link">Mot de passe oublié ?</a>
+    <a href="#" class="auth-link">Mot de passe oublié ?</a>
 
     <div class="auth-sep"></div>
     <p class="auth-alt">Pas encore de compte ?</p>
-    <a th:href="@{/inscription}" class="auth-alt-link">Créer un compte</a>
+    <a href="#" class="auth-alt-link">Créer un compte</a>
 </section>
 </html>

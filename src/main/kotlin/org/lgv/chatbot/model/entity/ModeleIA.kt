@@ -24,5 +24,9 @@ class ModeleIA(
     var fournisseur: FournisseurIA,
 
     @OneToMany(mappedBy = "modeleIA")
-    var conversations: MutableList<Conversation> = mutableListOf()
-)
+    var conversations: MutableList<Conversation> = mutableListOf(),
+    val urlAPI: String
+) {
+
+
+}
