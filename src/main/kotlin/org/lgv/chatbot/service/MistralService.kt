@@ -20,7 +20,7 @@ class MistralService(
 ) : IAService {
     override fun getFournisseur(): String = "Mistral"
 
-    override fun envoyerPrompt(prompt: String, modele: ModeleIA): Any {
+    override fun envoyerPrompt(prompt: String, modele: ModeleIA): String {
 
         // Étape 1 : Création du message de l'utilisateur
         val message = MistralMessage(
@@ -30,7 +30,7 @@ class MistralService(
 
         // Étape 2 : Préparation de la requête pour Mistral
         val request = MistralChatRequest(
-            model = modele.nom,
+            model = modele.identifiantModele,
             messages = listOf(message)
         )
 

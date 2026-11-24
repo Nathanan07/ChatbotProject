@@ -48,19 +48,19 @@ class DataInitializer(
         // 3. Initialisation des Modèles IA reliés à leurs fournisseurs
         val modeles = listOf(
             ModeleIA(
-                nom = "Gemini 1.5 Flash",
-                identifiantModele = "gemini-1.5-flash",
+                nom = "Gemini 3.5 Flash",
+                identifiantModele = "gemini-3.5-flash-lite",
                 actif = true,
                 fournisseur = gemini,
-                urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+                urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
 
             ),
             ModeleIA(
-                nom = "Gemini 1.5 Pro",
-                identifiantModele = "gemini-1.5-pro",
+                nom = "Gemini 3.8 Pro",
+                identifiantModele = "gemini-3.8-flash",
                 actif = true,
                 fournisseur = gemini,
-                urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent",
+                urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
             ),
             ModeleIA(
                 nom = "Mistral Small",

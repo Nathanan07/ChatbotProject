@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base :: layout(~{::title}, ~{::main})}">
+      th:replace="~{base :: base('EveBot', ~{::main}, 'conversations')}">
 
 <head>
     <title>Assistant IA</title>
@@ -20,7 +20,7 @@
 
             <h2>Comment puis-je vous aider ?</h2>
 
-            <p class="text-muted">
+            <p >
                 Choisissez un modèle IA et posez votre question.
             </p>
 
@@ -30,8 +30,7 @@
         <div th:each="message : ${messages}"
              class="mb-4">
 
-            <strong th:text="${message.typeMessage}">
-            </strong>
+            <strong th:text="${message.type}"></strong>
 
             <div class="message mt-2 message-content"
                  th:text="${message.contenu}">
@@ -40,94 +39,103 @@
         </div>
 
     </section>
+
+    <!-- Zone de saisie -->
+    <div class="border-top p-3">
+
+        <!-- Création d'une conversation -->
+        <form id="formChat"
+              th:if="${conversation == null}"
+              th:action="@{/conversations}"
+              method="post">
+
+            <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-end gap-2">
+
+                <div class="model-select-wrapper">
+
+                    <!-- Choix du modèle IA -->
+                    <select name="idModele"
+                            class="form-select model-select"
+                            required>
+
+                        <option value="" disabled selected>
+                            Choisir un modèle IA
+                        </option>
+
+                        <option th:each="modele : ${modeles}"
+                                th:value="${modele.id}"
+                                th:text="${modele.nom}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="flex-grow-1">
+
+                    <!-- Prompt -->
+                    <textarea name="prompt"
+                              class="form-control"
+                              rows="2"
+                              placeholder="Posez votre question..."
+                              required></textarea>
+
+                </div>
+
+                <div class="send-button-wrapper">
+
+                    <button class="btn btn-primary" type="submit">
+                        Envoyer
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <!-- Conversation existante -->
+        <form th:if="${conversation != null}"
+              th:action="@{/conversations/{id}/messages(id=${conversation.id})}"
+              method="post">
+
+            <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-end gap-2">
+
+                <!-- Modèle utilisé -->
+                <div class="model-current d-flex align-items-center gap-2">
+
+
+
+                    <span th:text="${conversation.modeleIA.nom}"></span>
+
+                </div>
+
+                <!-- Prompt -->
+                <div class="flex-grow-1">
+
+                    <textarea name="prompt"
+                              class="form-control"
+                              rows="2"
+                              placeholder="Écrivez votre message..."
+                              required></textarea>
+
+                </div>
+
+                <div class="send-button-wrapper">
+
+                    <button class="btn btn-primary" type="submit">
+                        Envoyer
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </main>
+
 </body>
 </html>
-<!-- Zone de saisie -->
-<div class="border-top p-3">
-
-    <!-- Création d'une conversation -->
-    <form id="formChat"
-          th:if="${conversation == null}"
-          th:action="@{/conversations}"
-          method="post">
-
-        <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-end gap-2">
-
-            <div class="model-select-wrapper">
-                <!-- Choix du modèle IA -->
-                <select name="idModele"
-                        class="form-select model-select"
-                        required>
-
-                    <option value="" disabled selected>
-                        Choisir un modèle IA
-                    </option>
-
-                    <option th:each="modele : ${modeles}"
-                            th:value="${modele.id}"
-                            th:text="${modele.nom}">
-                    </option>
-
-                </select>
-            </div>
-            <div class="flex-grow-1">
-                <!-- Prompt -->
-                <textarea name="prompt"
-                          class="form-control"
-                          rows="2"
-                          placeholder="Posez votre question..."
-                          required></textarea>
-            </div>
-            <div class="send-button-wrapper">
-                <!-- Envoi -->
-                <button class="btn btn-primary"
-                        type="submit">
-                    Envoyer
-                </button>
-            </div>
-        </div>
-
-    </form>
-
-    <!-- Conversation existante -->
-    <form th:if="${conversation != null}"
-          th:action="@{/conversations/{id}/messages(id=${conversation.id})}"
-          method="post">
-
-        <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-end gap-2">
-
-            <!-- Modèle utilisé -->
-            <div class="model-current d-flex align-items-center gap-2">
-
-                <img th:src="@{${conversation.modeleIA.cheminLogo}}"
-                     alt="Logo du modèle"
-                     width="28"
-                     height="28">
-
-                <span th:text="${conversation.modeleIA.nom}">
-                </span>
-
-            </div>
-
-            <!-- Prompt -->
-            <div class="flex-grow-1">
-                <textarea name="prompt"
-                          class="form-control"
-                          rows="2"
-                          placeholder="Écrivez votre message..."
-                          required></textarea>
-            </div>
-            <div class="send-button-wrapper">
-                <!-- Envoi -->
-                <button class="btn btn-primary"
-                        type="submit">
-                    Envoyer
-                </button>
-            </div>
-
-        </div>
-
-    </form>
-
-</div>

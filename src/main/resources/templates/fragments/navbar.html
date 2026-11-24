@@ -1,7 +1,7 @@
 <div xmlns:th="http://www.thymeleaf.org">
     <aside th:fragment="navbar(activePage)" class="eve-sidebar">
 
-        <a th:href="@{/chat}" class="eve-brand"><img th:src="@{/img/LogoEve.png}" alt="Eve"></a>
+        <a th:href="@{/}" class="eve-brand"><img th:src="@{/img/LogoEve.png}" alt="Eve"></a>
 
         <!-- Bouton affiché uniquement sur la page de chat -->
         <a th:if="${activePage == 'conversations'}" th:href="@{/chat}" class="eve-new-chat">
@@ -10,7 +10,7 @@
 
         <ul class="eve-nav">
             <li>
-                <a th:href="@{/chat}" th:classappend="${activePage == 'conversations'} ? 'active'">
+                <a th:href="@{/}" th:classappend="${activePage == 'conversations'} ? 'active'">
                     <i class="ico ico-chat"></i> Conversations
                 </a>
             </li>
@@ -21,7 +21,7 @@
             </li>
             <li>
                 <a href="#" th:classappend="${activePage == 'parametres'} ? 'active'">
-                    <i class="ico ico-gear"></i> Paramètres
+                    <i class="ico ico-gear"></i> Historique
                 </a>
             </li>
             <li>

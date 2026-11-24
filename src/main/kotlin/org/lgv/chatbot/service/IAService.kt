@@ -8,5 +8,5 @@ interface IAService {
     fun getFournisseur(): String
 
     // Envoie un prompt au modèle choisi
-    fun envoyerPrompt(prompt: String, modele: ModeleIA): Any
+    fun envoyerPrompt(prompt: String, modele: ModeleIA): String
 }

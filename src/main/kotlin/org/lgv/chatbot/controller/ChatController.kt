@@ -7,6 +7,7 @@ import org.lgv.chatbot.model.entity.Conversation
 import org.lgv.chatbot.model.entity.*
 import org.lgv.chatbot.service.IAServiceFactory
 import org.springframework.http.HttpStatus
+import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.server.ResponseStatusException
 import java.time.LocalDateTime
-
-class ChatController(
+@Controller
+class  ChatController(
     private val iaServiceFactory: IAServiceFactory,
     private val conversationDAO: ConversationDAO,
     private val messageDAO: MessageDAO,
@@ -90,7 +91,7 @@ class ChatController(
 
 
             val messageAssistant = Message(
-                contenu = prompt,
+                contenu = reponse,
                 dateEnvoi = LocalDateTime.now(),
                 type = TypeMessage.UTILISATEUR,
                 conversation = conversationEnregistree
