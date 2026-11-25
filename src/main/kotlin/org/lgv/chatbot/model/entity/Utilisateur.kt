@@ -36,4 +36,6 @@ class Utilisateur(
 
     @OneToMany(mappedBy = "utilisateur")
     var signalements: MutableList<Signalement> = mutableListOf()
-)
+) {
+    constructor(prenom: String, nom: String, email: String, motDePasse: String?, role: Role) : this()
+}

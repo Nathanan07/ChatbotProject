@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RoleDAO : JpaRepository<Role, Long> {
-    fun findByNom(nom: String): Role? // <-- C'est cette ligne qu'il manquait
+    fun findByNom(nom: String): Role?
 }

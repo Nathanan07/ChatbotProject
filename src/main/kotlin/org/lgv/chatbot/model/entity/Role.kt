@@ -13,6 +13,9 @@ class Role(
     @Column(nullable = false)
     var nom: String,
 
+    @Column(nullable = false)
+    var nomLogique: String,
+
     @OneToMany(mappedBy = "role")
     var utilisateurs: MutableList<Utilisateur> = mutableListOf()
 )
