@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.time.LocalDateTime
 
 @Configuration
 class DataInitializer(
@@ -107,8 +108,9 @@ class DataInitializer(
                     prenom = "Timothée",
                     nom = "Moulin",
                     email = "admin@email.com",
-                    motDePasse = passwordEncoder.encode("admin123"),
-                    role = roleAdmin
+                    motDePasse = passwordEncoder.encode("admin123")!!,
+                    role = roleAdmin,
+                    dateCreation = LocalDateTime.now()
                 )
             )
             utilisateurDAO.save(
@@ -116,8 +118,10 @@ class DataInitializer(
                     nom = "Prane",
                     prenom = "Doli",
                     email = "doli.prane@email.com",
-                    motDePasse = passwordEncoder.encode("user123"),
-                    role = roleUser)
+                    motDePasse = passwordEncoder.encode("user123")!!,
+                    role = roleUser,
+                    dateCreation = LocalDateTime.now()
+                )
             )
         }
 

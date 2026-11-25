@@ -19,3 +19,29 @@
        th:classappend="${conversation != null and conversation.id == c.id} ? 'active' : ''">
     </a>
 </div>
+<div class="" th:if="${utilisateur != null}">
+
+
+
+
+<span th:text="${utilisateur != null
+   ? utilisateur.prenom + ' ' + utilisateur.nom
+   : 'Anonyme'}">
+   Anonyme
+</span>
+
+
+    <br>
+
+
+    <small th:text="${utilisateur != null
+   ? utilisateur.role.nom
+   : 'Visiteur'}">
+        Visiteur
+    </small>
+
+
+
+
+</div>
+

@@ -17,10 +17,10 @@ class Conversation(
     var dateCreation: LocalDateTime,
 
     var dateModification: LocalDateTime = LocalDateTime.now(),
-/*
+
     @ManyToOne
     @JoinColumn(name = "id_utilisateur", nullable = false)
-    var utilisateur: Utilisateur*/
+    var utilisateur: Utilisateur,
 
     @ManyToOne
     @JoinColumn(name = "id_modele", nullable = false)
@@ -31,5 +31,6 @@ class Conversation(
     var cleApi: CleAPI? = null,
 
     @OneToMany(mappedBy = "conversation")
-    var messages: MutableList<Message> = mutableListOf()
+    var messages: MutableList<Message> = mutableListOf(),
+
 )

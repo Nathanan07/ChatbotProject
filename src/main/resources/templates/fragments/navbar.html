@@ -26,9 +26,15 @@
             </li>
             <li>
                 <a th:href="@{/login}" th:classappend="${activePage == 'login'} ? 'active'">
-                    <i class="ico ico-login"></i> Connexion
+                    <i class="ico ico-login"></i> Deconnexion
                 </a>
             </li>
+<!--            <form th:action="@{/logout}" method="post">-->
+<!--                <button type="submit" class="btn btn-danger">-->
+<!--                    Déconnexion-->
+<!--                </button>-->
+<!--            </form>-->
+
         </ul>
 
         <p class="eve-tagline">Une IA<br>à vos côtés<br>tous les jours</p>

@@ -5,6 +5,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
+
 
 import org.springframework.security.web.SecurityFilterChain
 

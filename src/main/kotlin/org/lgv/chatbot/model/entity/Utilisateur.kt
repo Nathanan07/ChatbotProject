@@ -12,6 +12,9 @@ class Utilisateur(
     var id: Long? = null,
 
     @Column(nullable = false)
+    var prenom: String,
+
+    @Column(nullable = false)
     var nom: String,
 
     @Column(nullable = false, unique = true)
@@ -29,13 +32,12 @@ class Utilisateur(
     @OneToMany(mappedBy = "utilisateur")
     var workspaces: MutableList<Workspace> = mutableListOf(),
 
-    /*@OneToMany(mappedBy = "utilisateur")
-    var conversations: MutableList<Conversation> = mutableListOf(),
+//    @OneToMany(mappedBy = "utilisateur")
+//    var conversations: MutableList<Conversation> = mutableListOf(),
 
-     */
+    @OneToMany(mappedBy = "utilisateur", cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    var conversations: MutableList<Conversation> = mutableListOf(),
 
     @OneToMany(mappedBy = "utilisateur")
     var signalements: MutableList<Signalement> = mutableListOf()
-) {
-    constructor(prenom: String, nom: String, email: String, motDePasse: String?, role: Role) : this()
-}
+)
