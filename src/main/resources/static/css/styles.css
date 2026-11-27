@@ -61,6 +61,7 @@
 .ico-anthropic { --i: url("../vendor/bootstrap-icons/anthropic.svg"); }
 .ico-google    { --i: url("../vendor/bootstrap-icons/google.svg"); }
 .ico-meta      { --i: url("../vendor/bootstrap-icons/meta.svg"); }
+.ico-history   { --i: url("../vendor/bootstrap-icons/clock-history.svg"); }
 
 /* Base ------------------------------------------------------------------- */
 html, body { height: 100%; }
@@ -87,13 +88,13 @@ a { color: inherit; text-decoration: none; }
 .eve-app { display: flex; min-height: 100vh; }
 
 .eve-sidebar {
-    position: relative;
     flex: 0 0 280px;
     display: flex;
     flex-direction: column;
     padding: 28px 22px 26px;
     background: linear-gradient(180deg, rgba(10, 20, 80, .85), rgba(5, 11, 43, .95));
     overflow: hidden;
+    position: sticky; top: 0; align-self: flex-start; height: 100vh;
 }
 .eve-sidebar::after {            /* vague décorative en bas de la sidebar */
     content: "";
@@ -107,6 +108,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 .eve-new-chat {
+    position: relative; z-index: 1;
+    flex: 0 0 auto;
     display: flex; align-items: center; justify-content: center; gap: 12px;
     padding: 14px 18px;
     border-radius: 18px;
@@ -118,7 +121,7 @@ a { color: inherit; text-decoration: none; }
 }
 .eve-new-chat:hover { color: #fff; filter: brightness(1.1); }
 
-.eve-nav { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.eve-nav { position: relative; z-index: 1; flex: 0 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: none; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .eve-nav a {
     position: relative;
     display: flex; align-items: center; gap: 16px;
@@ -385,7 +388,8 @@ body.eve-auth::after {           /* vague bas droite */
 .model-logo.lg { width: 148px; height: 148px; border-radius: 28px; font-size: 5rem; border: 1px solid var(--eve-border); background: rgba(255, 255, 255, .05); box-shadow: 0 0 30px rgba(91, 76, 231, .25); }
 .model-logo.mistral { background: #f7a000; color: #111; font-size: 1.4rem; }
 .model-logo.claude { background: #12132a; color: #ff7a4d; }
-.model-logo.google { background: #12132a; color: #4285f4; }
+.model-logo.google, .model-logo.gemini { background: #12132a; color: #6ea0ff; }
+.model-logo.sm { width: 46px; height: 46px; font-size: 1.3rem; border-radius: 12px; }
 .model-logo.meta { background: #12132a; color: #2d7cff; }
 .model-logo .ico { width: 1em; height: 1em; }
 .actions-cell { display: flex; gap: 10px; flex-wrap: nowrap; }
@@ -500,10 +504,136 @@ body.eve-auth::after {           /* vague bas droite */
     font-family: "SFMono-Regular", Consolas, monospace; font-size: 1.02rem;
 }
 
+
+/* ==========================================================================
+   Barre latérale : historique des conversations
+   ========================================================================== */
+.eve-history-toggle { cursor: pointer; }
+.eve-history-toggle .chevron { margin-left: auto; font-size: .9rem; transition: transform .2s; }
+.eve-history-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+
+.eve-nav .eve-history { margin: 6px 0 4px; max-height: 30vh; overflow-y: auto; padding-right: 4px; }
+.eve-nav .eve-history::-webkit-scrollbar { width: 6px; }
+.eve-nav .eve-history::-webkit-scrollbar-thumb { background: rgba(145, 106, 250, .45); border-radius: 6px; }
+.eve-history-empty { margin: 4px 8px 8px; font-size: .95rem; color: var(--eve-muted); }
+
+.eve-nav .eve-history a.eve-conv {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+    padding: 9px 14px; margin-bottom: 4px;
+    border-radius: 12px; font-size: 1rem; color: #cfd4f2;
+}
+.eve-nav .eve-history a.eve-conv:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+.eve-nav .eve-history a.eve-conv.active { color: #fff; background: rgba(91, 76, 231, .3); border: 1px solid var(--eve-border-soft); }
+.eve-nav .eve-history a.eve-conv.active::before { display: none; }
+.eve-conv-title { display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.eve-conv-model { color: var(--eve-muted); font-size: .8rem; }
+
+/* ==========================================================================
+   Chat : messages + zone de saisie
+   ========================================================================== */
+.eve-panel.chat-page { height: calc(100vh - 40px); }
+.chat-welcome { margin: auto; text-align: center; padding: 20px; }
+.chat-welcome h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; }
+.chat-welcome p { color: var(--eve-muted); font-size: 1.15rem; margin: 0; }
+.chat-messages { min-height: 0; }
+.msg .bubble { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.composer {
+    flex: 0 0 auto;
+    margin: 0 26px 26px;
+    padding: 14px 14px 12px 22px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid var(--eve-border);
+    transition: border-color .2s, box-shadow .2s;
+}
+.composer:focus-within { border-color: var(--eve-violet); box-shadow: 0 0 0 3px rgba(145, 106, 250, .18); }
+.composer-input {
+    display: block; width: 100%;
+    min-height: 28px; max-height: 200px;
+    padding: 4px 0; resize: none;
+    background: transparent; border: 0; outline: 0;
+    color: #fff; font: inherit; font-size: 1.12rem; line-height: 1.5;
+}
+.composer-input::placeholder { color: var(--eve-muted); }
+.composer-bar { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.composer-hint { margin-left: auto; color: var(--eve-muted); font-size: .85rem; }
+
+.model-select-wrap, .model-pill {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 10px;
+    height: 44px; padding: 0 16px;
+    border-radius: 999px;
+    color: #dfe3ff; font-size: 1rem;
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid var(--eve-border-soft);
+}
+.model-select-wrap { cursor: pointer; }
+.model-select-wrap:hover, .model-select-wrap:focus-within { border-color: var(--eve-violet); background: rgba(255, 255, 255, .1); }
+.model-select-wrap .ico-down { font-size: .85rem; pointer-events: none; }
+.model-select {
+    appearance: none; -webkit-appearance: none;
+    background: transparent; border: 0; outline: 0; cursor: pointer;
+    color: #fff; font: inherit; padding-right: 4px;
+}
+.model-select option { background: #0a1450; color: #fff; }
+
+.btn-send {
+    flex: 0 0 auto;
+    width: 48px; height: 48px; border-radius: 50%;
+    display: grid; place-items: center;
+    color: #fff; font-size: 1.2rem; border: 0; cursor: pointer;
+    background: linear-gradient(135deg, #4a5cff, #8f6bff);
+    box-shadow: 0 0 20px rgba(91, 76, 231, .55);
+    transition: filter .2s, transform .1s;
+}
+.btn-send:hover { filter: brightness(1.15); }
+.btn-send:active { transform: scale(.94); }
+.btn-send:disabled { cursor: wait; filter: grayscale(.4) brightness(.8); }
+.btn-send.loading .ico { display: none; }
+.btn-send.loading::after {
+    content: ""; width: 20px; height: 20px; border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, .35); border-top-color: #fff;
+    animation: eve-spin .8s linear infinite;
+}
+@keyframes eve-spin { to { transform: rotate(360deg); } }
+
+/* ==========================================================================
+   Page de présentation des modèles
+   ========================================================================== */
+.prov-block { margin-bottom: 34px; }
+.prov-head { display: flex; align-items: center; gap: 18px; margin: 10px 0 18px; }
+.prov-head h2 { margin: 0; font-size: 1.6rem; font-weight: 700; }
+.prov-head p { margin: 2px 0 0; color: var(--eve-muted); font-size: 1.05rem; }
+.model-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.model-card {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 22px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid var(--eve-border);
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.model-card:hover { transform: translateY(-3px); border-color: var(--eve-violet); box-shadow: 0 10px 30px rgba(91, 76, 231, .25); }
+.model-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.model-card-top h3 { margin: 0; font-size: 1.3rem; font-weight: 600; }
+.model-card-desc { margin: 0; color: #b9c0ea; font-size: 1.02rem; line-height: 1.55; flex: 1; }
+.model-card .code-chip { align-self: flex-start; padding: 8px 14px; font-size: .92rem; }
+.model-card-cta { width: 100%; }
+
+/* Écrans peu hauts : on libère de la place dans la sidebar */
+@media (min-width: 993px) and (max-height: 800px) {
+    .eve-tagline { display: none; }
+    .eve-brand img { max-width: 130px; margin-bottom: 16px; }
+}
+
 /* Responsive ------------------------------------------------------------- */
 @media (max-width: 992px) {
     .eve-app { flex-direction: column; }
-    .eve-sidebar { flex: 0 0 auto; padding-bottom: 80px; }
+    .eve-sidebar { flex: 0 0 auto; padding-bottom: 80px; position: relative; height: auto; align-self: stretch; }
+    .eve-panel.chat-page { height: 85vh; }
+    .composer-hint { display: none; }
+    .composer-bar .btn-send { margin-left: auto; }
     .form-grid { grid-template-columns: 1fr; }
     .toolbar { flex-direction: column; align-items: stretch; }
     .eve-select.filter { width: 100%; }

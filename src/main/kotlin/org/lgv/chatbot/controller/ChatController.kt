@@ -1,6 +1,6 @@
 package org.lgv.chatbot.controller
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication
+
 import org.lgv.chatbot.model.dao.ConversationDAO
 import org.lgv.chatbot.model.dao.MessageDAO
 import org.lgv.chatbot.model.dao.ModeleIADAO
@@ -9,6 +9,7 @@ import org.lgv.chatbot.model.entity.Conversation
 import org.lgv.chatbot.model.entity.*
 import org.lgv.chatbot.service.IAServiceFactory
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -31,23 +32,22 @@ class  ChatController(
 
 
 
-    // Page d'accueil : liste des conversations
+    // Page d'accueil = "Nouveau chat" (aucune conversation sélectionnée)
+    // L'historique et l'utilisateur sont ajoutés à la vue par GlobalModelAdvice.
     @GetMapping("/")
-    fun accueil(model: Model, authentication: Authentication): String {
-//Recupere l'utilisateur de la session
-        val utilisateur = this.getUtilisateurConnecte(authentication)
-// Ajout de l'utilisateur à la vue
-        model.addAttribute("utilisateur", utilisateur)
-
-        // Retire la conversation courante
+    fun accueil(
+        @RequestParam(required = false) modele: Long?,
+        model: Model
+    ): String {
+        // Aucune conversation courante : on affiche l'écran "Comment puis-je vous aider ?"
         model.addAttribute("conversation", null)
-
-        model.addAttribute("modeles", modeleIADAO.findAll())
         model.addAttribute("messages", emptyList<Message>())
-        model.addAttribute(
-            "conversations",
-            conversationDAO.findAllByUtilisateurOrderByDateModificationDesc(utilisateur = utilisateur)
-        )
+
+        // Seuls les modèles actifs sont proposés
+        model.addAttribute("modeles", modeleIADAO.findAll().filter { it.actif })
+
+        // Modèle présélectionné (lien "Discuter" depuis la page Modèles IA)
+        model.addAttribute("modeleSelectionne", modele)
 
         return "utilisateur/chat"
     }
@@ -106,7 +106,7 @@ class  ChatController(
             val messageAssistant = Message(
                 contenu = reponse,
                 dateEnvoi = LocalDateTime.now(),
-                type = TypeMessage.UTILISATEUR,
+                type = TypeMessage.IA,
                 conversation = conversationEnregistree
             )
 
@@ -114,6 +114,7 @@ class  ChatController(
 
         } catch (e: Exception) {
             println("Erreur lors de l’appel au modèle ${modele.nom} : ${e.message}")
+            enregistrerErreurIA(conversationEnregistree)
         }
 
         conversationEnregistree.dateModification =
@@ -131,21 +132,12 @@ class  ChatController(
         authentication: Authentication,
         model: Model
     ): String {
-//Recupere l'utilisateur
+        // L'utilisateur et l'historique sont ajoutés à la vue par GlobalModelAdvice
         val utilisateur = this.getUtilisateurConnecte(authentication)
-// Ajout de l'utilisateur à la vue
-        model.addAttribute("utilisateur", utilisateur)
-
 
         val conversation = conversationDAO
             .findByIdAndUtilisateur(id,utilisateur)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"Conversation introuvable")
-
-
-        model.addAttribute(
-            "conversations",
-            conversationDAO.findAllByUtilisateurOrderByDateModificationDesc(utilisateur)
-        )
 
 
         model.addAttribute("conversation", conversation)
@@ -182,7 +174,7 @@ class  ChatController(
         messageDAO.save(messageUtilisateur)
 
         try {
-            val modele = conversation.modeleIA!!
+            val modele = conversation.modeleIA
             // Sélection automatique du service
             val iaService = iaServiceFactory.getService(modele)
 
@@ -191,22 +183,35 @@ class  ChatController(
 
 
             val messageAssistant = Message(
-                contenu = prompt,
+                contenu = reponse,
                 dateEnvoi = LocalDateTime.now(),
-                type = TypeMessage.UTILISATEUR,
+                type = TypeMessage.IA,
                 conversation = conversation
             )
 
             messageDAO.save(messageAssistant)
 
         } catch (e: Exception) {
-            println("Erreur lors de l'appel à ${conversation.modeleIA!!.nom} : ${e.message}")
+            println("Erreur lors de l'appel à ${conversation.modeleIA.nom} : ${e.message}")
+            enregistrerErreurIA(conversation)
         }
 
         conversation.dateModification = LocalDateTime.now()
         conversationDAO.save(conversation)
 
         return "redirect:/conversations/$id"
+    }
+
+    // Si l'appel à l'IA échoue, on garde une trace visible dans la conversation
+    private fun enregistrerErreurIA(conversation: Conversation) {
+        messageDAO.save(
+            Message(
+                contenu = "Désolé, une erreur est survenue lors de la réponse du modèle. Veuillez réessayer.",
+                dateEnvoi = LocalDateTime.now(),
+                type = TypeMessage.IA,
+                conversation = conversation
+            )
+        )
     }
 
     fun getUtilisateurConnecte( authentication: Authentication): Utilisateur{

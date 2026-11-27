@@ -59,6 +59,7 @@ class DataInitializer(
                 actif = true,
                 fournisseur = gemini,
                 urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+                description = "Modèle rapide et léger de Google, idéal pour les questions courantes et les réponses instantanées.",
 
             ),
             ModeleIA(
@@ -67,6 +68,7 @@ class DataInitializer(
                 actif = true,
                 fournisseur = gemini,
                 urlAPI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+                description = "Modèle polyvalent de Google, pensé pour des réponses plus élaborées et des échanges plus longs.",
             ),
             ModeleIA(
                 nom = "Mistral Small",
@@ -74,6 +76,7 @@ class DataInitializer(
                 actif = true,
                 fournisseur = mistral,
                 urlAPI = "https://api.mistral.ai/v1/chat/completions",
+                description = "Modèle compact de Mistral AI, rapide et économique pour les tâches du quotidien.",
             ),
             ModeleIA(
                 nom = "Mistral Medium",
@@ -81,6 +84,7 @@ class DataInitializer(
                 actif = true,
                 fournisseur = mistral,
                 urlAPI = "https://api.mistral.ai/v1/chat/completions",
+                description = "Modèle équilibré de Mistral AI : un bon compromis entre qualité des réponses et rapidité.",
             )
         )
 

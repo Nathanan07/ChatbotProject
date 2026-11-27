@@ -11,24 +11,35 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* Chat : affichage local du message envoyé (le back-end gèrera la réponse) */
-    const form = document.getElementById("chatForm");
-    const input = document.getElementById("chatInput");
-    const box = document.getElementById("chatMessages");
-    if (form && input && box) {
-        form.addEventListener("submit", (e) => {
-            const text = input.value.trim();
-            if (!text) { e.preventDefault(); return; }
-            e.preventDefault();                       // retirer cette ligne une fois le back branché
-            const msg = document.createElement("div");
-            msg.className = "msg user";
-            const bubble = document.createElement("div");
-            bubble.className = "bubble";
-            bubble.textContent = text;
-            msg.appendChild(bubble);
-            box.appendChild(msg);
-            box.scrollTop = box.scrollHeight;
-            input.value = "";
+    /* Chat : défilement, zone de saisie auto-extensible, envoi avec Entrée */
+    const chatForm = document.getElementById("formChat");
+    const prompt = document.getElementById("chatPrompt");
+    const messages = document.getElementById("chatMessages");
+    const btnSend = document.getElementById("btnSend");
+
+    if (messages) messages.scrollTop = messages.scrollHeight;
+
+    if (chatForm && prompt) {
+        const autoGrow = () => {
+            prompt.style.height = "auto";
+            prompt.style.height = Math.min(prompt.scrollHeight, 200) + "px";
+        };
+        prompt.addEventListener("input", autoGrow);
+
+        // Entrée = envoyer, Maj+Entrée = retour à la ligne
+        prompt.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+                e.preventDefault();
+                chatForm.requestSubmit();
+            }
+        });
+
+        // Évite le double envoi pendant que l'IA répond
+        chatForm.addEventListener("submit", () => {
+            if (btnSend) {
+                btnSend.disabled = true;
+                btnSend.classList.add("loading");
+            }
         });
     }
 

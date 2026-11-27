@@ -25,7 +25,10 @@ class ModeleIA(
 
     @OneToMany(mappedBy = "modeleIA")
     var conversations: MutableList<Conversation> = mutableListOf(),
-    var urlAPI: String
+    var urlAPI: String,
+
+    @Column(columnDefinition = "TEXT")
+    var description: String? = null
 ) {
 
 

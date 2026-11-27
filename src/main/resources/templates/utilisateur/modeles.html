@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: base('Eve - Modèles IA', ~{::content}, 'modeles')}">
+
+<section th:fragment="content" class="eve-panel">
+
+    <div class="page-head">
+        <div>
+            <h1 class="page-title">Modèles d'IA</h1>
+            <p class="page-sub">Découvrez les intelligences artificielles disponibles sur Eve.</p>
+        </div>
+    </div>
+
+    <div class="page-body">
+
+        <p class="page-sub" th:if="${#lists.isEmpty(fournisseurs)}">
+            Aucun modèle n'est disponible pour le moment.
+        </p>
+
+        <!-- Un bloc par fournisseur -->
+        <section class="prov-block" th:each="f : ${fournisseurs}">
+
+            <div class="prov-head">
+                <span class="model-logo" th:classappend="${#strings.toLowerCase(f.nom)}"
+                      th:text="${#strings.substring(f.nom, 0, 1)}">M</span>
+                <div>
+                    <h2 th:text="${f.nom}">Fournisseur</h2>
+                    <p th:text="${f.description}">Description du fournisseur</p>
+                </div>
+            </div>
+
+            <div class="model-grid">
+                <!-- Seuls les modèles actifs sont présentés -->
+                <article class="model-card" th:each="m : ${f.modelesIA}" th:if="${m.actif}">
+                    <div class="model-card-top">
+                        <h3 th:text="${m.nom}">Nom du modèle</h3>
+                        <span class="badge-statut actif">Disponible</span>
+                    </div>
+
+                    <p class="model-card-desc"
+                       th:text="${m.description} ?: |Modèle d'intelligence artificielle de ${f.nom}.|">
+                        Description du modèle
+                    </p>
+
+                    <code class="code-chip" th:text="${m.identifiantModele}">identifiant</code>
+
+                    <a th:href="@{/(modele=${m.id})}" class="btn-eve model-card-cta">
+                        <i class="ico ico-chat"></i> Discuter avec ce modèle
+                    </a>
+                </article>
+            </div>
+        </section>
+    </div>
+</section>
+</html>

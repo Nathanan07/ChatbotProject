@@ -3,8 +3,8 @@
 
         <a th:href="@{/}" class="eve-brand"><img th:src="@{/img/LogoEve.png}" alt="Eve"></a>
 
-        <!-- Bouton affiché uniquement sur la page de chat -->
-        <a th:if="${activePage == 'conversations'}" th:href="@{/chat}" class="eve-new-chat">
+        <!-- Nouveau chat : renvoie vers l'accueil (aucune conversation sélectionnée) -->
+        <a th:href="@{/}" class="eve-new-chat">
             <i class="ico ico-plus"></i> Nouveau chat
         </a>
 
@@ -15,26 +15,42 @@
                 </a>
             </li>
             <li>
-                <a th:href="@{/admin/modeles}" th:classappend="${activePage == 'modeles'} ? 'active'">
+                <a th:href="@{/modeles}" th:classappend="${activePage == 'modeles'} ? 'active'">
                     <i class="ico ico-grid"></i> Modèles IA
                 </a>
             </li>
             <li>
-                <a href="#" th:classappend="${activePage == 'parametres'} ? 'active'">
-                    <i class="ico ico-gear"></i> Historique
+                <!-- Historique : déplie la liste des anciennes conversations -->
+                <a href="#historiqueListe" class="eve-history-toggle"
+                   data-bs-toggle="collapse" role="button"
+                   th:attr="aria-expanded=${activePage == 'conversations'}">
+                    <i class="ico ico-history"></i> Historique
+                    <i class="ico ico-down chevron"></i>
                 </a>
+
+                <div id="historiqueListe" class="collapse eve-history"
+                     th:classappend="${activePage == 'conversations'} ? 'show'">
+
+                    <p class="eve-history-empty"
+                       th:if="${conversations == null or #lists.isEmpty(conversations)}">
+                        Aucune conversation pour le moment.
+                    </p>
+
+                    <a th:each="c : ${conversations}"
+                       th:href="@{/conversations/{id}(id=${c.id})}"
+                       th:title="${c.titre}"
+                       class="eve-conv"
+                       th:classappend="${conversation != null and conversation.id == c.id} ? 'active'">
+                        <span class="eve-conv-title" th:text="${c.titre}">Titre</span>
+                        <small class="eve-conv-model" th:text="${c.modeleIA.nom}">Modèle</small>
+                    </a>
+                </div>
             </li>
             <li>
                 <a th:href="@{/login}" th:classappend="${activePage == 'login'} ? 'active'">
                     <i class="ico ico-login"></i> Deconnexion
                 </a>
             </li>
-<!--            <form th:action="@{/logout}" method="post">-->
-<!--                <button type="submit" class="btn btn-danger">-->
-<!--                    Déconnexion-->
-<!--                </button>-->
-<!--            </form>-->
-
         </ul>
 
         <p class="eve-tagline">Une IA<br>à vos côtés<br>tous les jours</p>

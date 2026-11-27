@@ -13,11 +13,5 @@ class MainController {
     @GetMapping("/login")
     fun login(): String {
         return "auth/login"
-
-    }
-
-    @GetMapping("/admin/modeles")
-    fun adminModeles(): String {
-        return "admin/modeles" // Fait référence au fichier login.html dans vos templates
     }
 }

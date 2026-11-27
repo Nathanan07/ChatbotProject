@@ -36,6 +36,8 @@ class SecurityConfig {
                         "/css/**",
                         "/js/**",
                         "/images/**",
+                        "/img/**",
+                        "/fonts/**",
                         "/vendor/**"
                     ).permitAll()
 
@@ -51,7 +53,7 @@ class SecurityConfig {
                     .loginProcessingUrl("/login")
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/", false)
+                    .defaultSuccessUrl("/", true)
                     .failureUrl("/login?error")
                     .permitAll()
             }
